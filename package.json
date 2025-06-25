@@ -12,7 +12,8 @@
   "dependencies": {
     "lil-gui": "^0.20.0",
     "three": "^0.177.0",
-    "vue": "^3.5.13"
+    "vue": "^3.5.13",
+    "vue-feather": "^2.0.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^5.2.3",

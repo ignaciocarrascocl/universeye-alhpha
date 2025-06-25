@@ -1,9 +1,11 @@
 <script setup>
 import ThreeScene from './components/ThreeScene.vue'
+import BandUI from './components/BandUI.vue'
 </script>
 
 <template>
   <ThreeScene />
+  <BandUI />
 </template>
 
 <style scoped>
