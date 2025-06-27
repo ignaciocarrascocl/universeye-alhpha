@@ -43,6 +43,7 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
+import { GUI } from 'lil-gui'
 
 const sceneContainer = ref(null)
 const mainEye = ref(null)
@@ -57,11 +58,25 @@ let maxDist
 // WebGL variables
 let gl, program, start
 let timeLoc, resLoc, posLoc, quadVBO, interactionPointsLoc, numInteractionsLoc
+let numWavesLoc, waveAmplitudeLoc, waveSpeedLoc, radialFreqLoc, mixFactorLoc, combinedMultLoc, grainIntensityLoc
 
 // Interaction tracking
 const MAX_INTERACTIONS = 10
 const interactionPoints = []
 let interactionData = new Float32Array(MAX_INTERACTIONS * 4) // x, y, intensity, time
+
+// GUI controls object
+const guiControls = {
+    numWaves: 30.0,
+    waveAmplitude: 0.1,
+    waveSpeed: 6.0,
+    radialFreq: 20.0,
+    mixFactor: 0.3,
+    combinedMult: 4.0,
+    grainIntensity: 0.25
+}
+
+let gui = null
 
 // WebGL shader sources
 const vertexSrc = `
@@ -79,6 +94,13 @@ const fragmentSrc = `
     uniform vec2  u_resolution;
     uniform vec4  u_interactions[${MAX_INTERACTIONS}]; // x, y, intensity, time
     uniform int   u_numInteractions;
+    uniform float u_numWaves;
+    uniform float u_waveAmplitude;
+    uniform float u_waveSpeed;
+    uniform float u_radialFreq;
+    uniform float u_mixFactor;
+    uniform float u_combinedMult;
+    uniform float u_grainIntensity;
     varying vec2  v_uv;
     #define PI 3.141592653589793
 
@@ -236,28 +258,28 @@ const fragmentSrc = `
       float angle = atan(spiralUv.y, spiralUv.x); // Angle from the positive x-axis
       float radius = length(spiralUv);            // Distance from the center
 
-      // Define parameters for the wavy pattern
-      float num_waves = 30.0;     // Doubled number of waves radiating from the center
-      float wave_amplitude = 0.5; // Controls how much the waves "wiggle"
-      float wave_speed = 6.0;     // Doubled speed of the animation
+      // Define parameters for the wavy pattern (now controlled by GUI)
+      float num_waves = u_numWaves;           // GUI controlled number of waves
+      float wave_amplitude = u_waveAmplitude; // GUI controlled wave amplitude
+      float wave_speed = u_waveSpeed;         // GUI controlled animation speed
 
       // Create the wavy pattern based on angle and radius
-      float wave_pattern = sin(angle * num_waves + radius * 40.0 + u_time * wave_speed);
+      float wave_pattern = sin(angle * num_waves + radius * 60.0 + u_time * wave_speed);
 
-      // Add a radial component to enhance the tunnel effect
-      float radial_pattern = sin(radius * 20.0 + u_time * wave_speed * 0.5);
+      // Add a radial component to enhance the tunnel effect (GUI controlled frequency)
+      float radial_pattern = sin(radius * u_radialFreq + u_time * wave_speed * 0.5);
 
-      // Combine the wave and radial patterns
-      float combined_pattern = mix(wave_pattern, radial_pattern, 0.3);
+      // Combine the wave and radial patterns (GUI controlled mix factor)
+      float combined_pattern = mix(wave_pattern, radial_pattern, u_mixFactor);
 
-      // Map the combined pattern to black lines
-      float allSpirals = step(0.0, sin(combined_pattern * 4.0));
+      // Map the combined pattern to black lines (GUI controlled multiplier)
+      float allSpirals = step(0.0, sin(combined_pattern * u_combinedMult));
       
       // Apply spiral lines as fully black overlay on top of colorful background
       col = mix(col, vec3(0.0), allSpirals);
 
-      // Heavy grain
-      float g = (noise(finalUv * u_resolution * 0.5 + u_time) - 0.5) * 0.25;
+      // Heavy grain (GUI controlled intensity)
+      float g = (noise(finalUv * u_resolution * 0.5 + u_time) - 0.5) * u_grainIntensity;
       col += g;
 
       gl_FragColor = vec4(col, 1.0);
@@ -329,6 +351,15 @@ function initWebGL() {
     resLoc = gl.getUniformLocation(program, "u_resolution")
     interactionPointsLoc = gl.getUniformLocation(program, "u_interactions")
     numInteractionsLoc = gl.getUniformLocation(program, "u_numInteractions")
+    
+    // GUI-controlled uniform locations
+    numWavesLoc = gl.getUniformLocation(program, "u_numWaves")
+    waveAmplitudeLoc = gl.getUniformLocation(program, "u_waveAmplitude")
+    waveSpeedLoc = gl.getUniformLocation(program, "u_waveSpeed")
+    radialFreqLoc = gl.getUniformLocation(program, "u_radialFreq")
+    mixFactorLoc = gl.getUniformLocation(program, "u_mixFactor")
+    combinedMultLoc = gl.getUniformLocation(program, "u_combinedMult")
+    grainIntensityLoc = gl.getUniformLocation(program, "u_grainIntensity")
 
     return true
 }
@@ -343,6 +374,15 @@ function renderWebGL(now) {
     gl.uniform1f(timeLoc, t)
     gl.uniform2f(resLoc, glCanvas.value.width, glCanvas.value.height)
     gl.uniform1i(numInteractionsLoc, interactionPoints.length)
+    
+    // Update GUI-controlled uniforms
+    gl.uniform1f(numWavesLoc, guiControls.numWaves)
+    gl.uniform1f(waveAmplitudeLoc, guiControls.waveAmplitude)
+    gl.uniform1f(waveSpeedLoc, guiControls.waveSpeed)
+    gl.uniform1f(radialFreqLoc, guiControls.radialFreq)
+    gl.uniform1f(mixFactorLoc, guiControls.mixFactor)
+    gl.uniform1f(combinedMultLoc, guiControls.combinedMult)
+    gl.uniform1f(grainIntensityLoc, guiControls.grainIntensity)
     
     // Update interaction data array
     for (let i = 0; i < MAX_INTERACTIONS; i++) {
@@ -364,6 +404,32 @@ function renderWebGL(now) {
     gl.drawArrays(gl.TRIANGLES, 0, 6)
 
     requestAnimationFrame(renderWebGL)
+}
+
+function initGUI() {
+    gui = new GUI()
+    gui.title('Controles de Espiral Visual')
+    
+    // Spiral Lines folder
+    const spiralFolder = gui.addFolder('Líneas Espirales')
+    spiralFolder.add(guiControls, 'numWaves', 5, 100, 1).name('Número de Ondas')
+    spiralFolder.add(guiControls, 'waveAmplitude', 0.0, 1.0, 0.01).name('Amplitud de Ondas')
+    spiralFolder.add(guiControls, 'waveSpeed', 0.1, 20.0, 0.1).name('Velocidad de Animación')
+    spiralFolder.add(guiControls, 'radialFreq', 5.0, 50.0, 1.0).name('Frecuencia Radial')
+    spiralFolder.add(guiControls, 'mixFactor', 0.0, 1.0, 0.01).name('Factor de Mezcla')
+    spiralFolder.add(guiControls, 'combinedMult', 1.0, 10.0, 0.1).name('Multiplicador de Patrón')
+    spiralFolder.open()
+    
+    // Effects folder
+    const effectsFolder = gui.addFolder('Efectos Visuales')
+    effectsFolder.add(guiControls, 'grainIntensity', 0.0, 1.0, 0.01).name('Intensidad de Grano')
+    effectsFolder.open()
+    
+    // Position GUI in top right corner
+    gui.domElement.style.position = 'fixed'
+    gui.domElement.style.top = '20px'
+    gui.domElement.style.right = '20px'
+    gui.domElement.style.zIndex = '10000'
 }
 
 function addInteraction(x, y, intensity = 1.0) {
@@ -527,6 +593,9 @@ onMounted(() => {
     if (initWebGL()) {
         requestAnimationFrame(renderWebGL)
     }
+    
+    // Initialize GUI
+    initGUI()
 
     // Initial setup
     setTimeout(() => {
@@ -547,6 +616,11 @@ onUnmounted(() => {
     
     // Resize event
     window.removeEventListener('resize', handleResize)
+    
+    // Clean up GUI
+    if (gui) {
+        gui.destroy()
+    }
 })
 </script>
 
