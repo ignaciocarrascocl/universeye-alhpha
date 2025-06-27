@@ -20,6 +20,11 @@
             <use href="#lids-path" class="lids" stroke="#000" stroke-width="20" />
         </svg>
 
+        <!-- Dinastia Logo -->
+        <div class="logo-container" ref="logoContainer">
+            <img src="/Dinastia.svg" alt="Dinastia" class="dinastia-logo" />
+        </div>
+
         <!-- Single eye in center -->
         <div class="eye-container">
             <svg ref="mainEye" class="eye main-eye" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"
@@ -48,6 +53,7 @@ import { GUI } from 'lil-gui'
 const sceneContainer = ref(null)
 const mainEye = ref(null)
 const glCanvas = ref(null)
+const logoContainer = ref(null)
 
 let eyeCenter
 const mousePos = { x: 0, y: 0 }
@@ -545,10 +551,32 @@ function updateEyeCenter() {
         y: eyeRect.top + eyeRect.height * 0.5
     }
 
+    // Calculate dynamic logo size based on eye size
+    updateLogoSize(eyeRect)
+
     maxDist = Math.sqrt(window.innerWidth * window.innerWidth + window.innerHeight * window.innerHeight) * 0.5
 
     // Trigger initial positioning
     handleMouseMove({ clientX: eyeCenter.x, clientY: eyeCenter.y })
+}
+
+function updateLogoSize(eyeRect) {
+    if (!logoContainer.value) return
+    
+    // Calculate logo size as 80% bigger than the eye (1.8x)
+    const eyeSize = Math.min(eyeRect.width, eyeRect.height)
+    const logoSize = eyeSize * 3
+    
+    // Apply the calculated size to the logo container
+    logoContainer.value.style.width = `${logoSize}px`
+    logoContainer.value.style.height = `${logoSize}px`
+    
+    // Position logo at the exact center of the eye
+    const eyeCenterX = eyeRect.left + eyeRect.width * 0.5
+    const eyeCenterY = eyeRect.top + eyeRect.height * 0.5
+    
+    logoContainer.value.style.left = `${eyeCenterX}px`
+    logoContainer.value.style.top = `${eyeCenterY}px`
 }
 
 function throttled(fn) {
@@ -650,8 +678,8 @@ onUnmounted(() => {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 300px;
-    height: 300px;
+    width: min(300px, 80vw);
+    height: min(300px, 80vh);
     z-index: 10;
 }
 
@@ -697,5 +725,40 @@ onUnmounted(() => {
 .pupil-group {
     transform: translate(calc(var(--pupil-x) * 1px), calc(var(--pupil-y) * 1px));
     transition: transform 0.1s ease-out;
+}
+
+.logo-container {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    z-index: 20;
+    pointer-events: none;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Size and position will be set dynamically by JavaScript */
+}
+
+.dinastia-logo {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.3));
+    transition: all 0.3s ease;
+    animation: logoRotate 8s linear infinite;
+}
+
+.dinastia-logo:hover {
+    filter: drop-shadow(0 0 25px rgba(255, 255, 255, 0.6));
+    transform: scale(1.05);
+    animation-duration: 4s; /* Speed up rotation on hover */
+}
+
+@keyframes logoRotate {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
 }
 </style>
