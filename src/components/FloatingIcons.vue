@@ -9,7 +9,7 @@
       @click="handleIconClick(index)"
       :title="icon.presetName"
     >
-      <img :src="icon.src" :alt="icon.alt" />
+      <img :src="icon.src" :alt="icon.alt" loading="eager" />
     </div>
   </div>
 </template>
@@ -64,6 +64,19 @@ const handleMouseMove = (event) => {
   }
 }
 
+const handleTouchMove = (event) => {
+  if (event.touches.length > 0) {
+    const touch = event.touches[0]
+    const centerX = window.innerWidth / 2
+    const centerY = window.innerHeight / 2
+    
+    mouseOffset.value = {
+      x: (touch.clientX - centerX) * 0.1,
+      y: (touch.clientY - centerY) * 0.1
+    }
+  }
+}
+
 const handleIconClick = (index) => {
   const icon = icons[index]
   console.log(`Icon ${index + 1} clicked - Applying preset: ${icon.preset}`)
@@ -83,10 +96,12 @@ const isActivePreset = (preset) => {
 
 onMounted(() => {
   window.addEventListener('mousemove', handleMouseMove)
+  window.addEventListener('touchmove', handleTouchMove, { passive: true })
 })
 
 onUnmounted(() => {
   window.removeEventListener('mousemove', handleMouseMove)
+  window.removeEventListener('touchmove', handleTouchMove)
 })
 </script>
 
@@ -103,8 +118,8 @@ onUnmounted(() => {
 
 .floating-icon {
   position: absolute;
-  width: 60px;
-  height: 60px;
+  width: 80px;
+  height: 80px;
   pointer-events: all;
   transition: transform 0.1s ease-out, opacity 0.3s ease, filter 0.3s ease;
   cursor: pointer;
@@ -113,9 +128,15 @@ onUnmounted(() => {
   display: flex;
   align-items: center;
   justify-content: center;
+  /* Mejoras para móvil */
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  user-select: none;
 }
 
-.floating-icon:hover {
+/* Combinar hover y active para dispositivos táctiles */
+.floating-icon:hover,
+.floating-icon:active {
   opacity: 1;
   transform: scale(1.2);
 }
@@ -154,5 +175,60 @@ onUnmounted(() => {
 .bottom-right {
   bottom: 20px;
   right: 20px;
+}
+
+/* Responsivo para móviles */
+@media (max-width: 768px) {
+  .floating-icon {
+    width: 70px;
+    height: 70px;
+  }
+  
+  .top-left {
+    top: 30px;
+    left: 30px;
+  }
+
+  .top-right {
+    top: 30px;
+    right: 30px;
+  }
+
+  .bottom-left {
+    bottom: 30px;
+    left: 30px;
+  }
+
+  .bottom-right {
+    bottom: 30px;
+    right: 30px;
+  }
+}
+
+@media (max-width: 480px) {
+  .floating-icon {
+    width: 60px;
+    height: 60px;
+  }
+  
+  .top-left {
+    top: 40px;
+    left: 40px;
+  }
+
+  .top-right {
+    top: 40px;
+    right: 40px;
+  }
+
+  .bottom-left {
+    bottom: 40px;
+    left: 40px;
+  }
+
+  .bottom-right {
+    bottom: 40px;
+    right: 40px;
+  }
 }
 </style>

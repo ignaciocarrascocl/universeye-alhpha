@@ -3,56 +3,75 @@
     <video autoplay muted loop class="background-video">
       <source src="/Looping_Animation_Generation_Complete.mp4" type="video/mp4">
     </video>
-    <div class="content-box">
-      <div class="iframe-grid">
-        <iframe 
-          style="border: 0; width: 350px; height: 350px;" 
-          src="https://bandcamp.com/EmbeddedPlayer/track=979445113/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
-          seamless>
-          <a href="https://dinastiamoon.bandcamp.com/track/spaghetti-western-3">SPAGHETTI WESTERN de Dinastía Moon</a>
-        </iframe>
-        
-        <iframe 
-          style="border: 0; width: 350px; height: 350px;" 
-          src="https://bandcamp.com/EmbeddedPlayer/track=2103735496/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
-          seamless>
-          <a href="https://dinastiamoon.bandcamp.com/track/isla-friendship">ISLA FRIENDSHIP de Dinastía Moon</a>
-        </iframe>
-        
-        <iframe 
-          style="border: 0; width: 350px; height: 350px;" 
-          src="https://bandcamp.com/EmbeddedPlayer/track=4275410357/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
-          seamless>
-          <a href="https://dinastiamoon.bandcamp.com/track/kepler">KEPLER de Dinastía Moon</a>
-        </iframe>
-        
-        <iframe 
-          style="border: 0; width: 350px; height: 350px;" 
-          src="https://bandcamp.com/EmbeddedPlayer/track=1110235795/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
-          seamless>
-          <a href="https://dinastiamoon.bandcamp.com/track/cosmonauta">COSMONAUTA de Dinastía Moon</a>
-        </iframe>
-        
-        <iframe 
-          style="border: 0; width: 350px; height: 350px;" 
-          src="https://bandcamp.com/EmbeddedPlayer/album=2788105991/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
-          seamless>
-          <a href="https://dinastiamoon.bandcamp.com/album/coscoroba-ep">COSCOROBA EP de Dinastía Moon</a>
-        </iframe>
-        
-        <iframe 
-          style="border: 0; width: 350px; height: 350px;" 
-          src="https://bandcamp.com/EmbeddedPlayer/track=1940190945/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
-          seamless>
-          <a href="https://dinastiamoon.bandcamp.com/track/desierto-paralelo-33-2">DESIERTO PARALELO 33 de Dinastía Moon</a>
-        </iframe>
-        
-        <iframe 
-          style="border: 0; width: 350px; height: 350px;" 
-          src="https://bandcamp.com/EmbeddedPlayer/track=1627307893/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
-          seamless>
-          <a href="https://dinastiamoon.bandcamp.com/track/mycelium-3">MYCELIUM de Dinastía Moon</a>
-        </iframe>
+    
+    <div class="content-wrapper">
+      <!-- Buttons above the content box -->
+      <div class="buttons-container">
+        <a href="#" class="nav-button">
+          <img src="/boton_merch.webp" alt="Merch" loading="eager" />
+        </a>
+        <a href="#" class="nav-button">
+          <img src="/boton_musica.webp" alt="Música" loading="eager" />
+        </a>
+        <a href="#" class="nav-button">
+          <img src="/boton_tour.webp" alt="Tour" loading="eager" />
+        </a>
+        <a href="#" class="nav-button">
+          <img src="/boton_videos.webp" alt="Videos" loading="eager" />
+        </a>
+      </div>
+      
+      <div class="content-box">
+        <div class="iframe-grid">
+          <iframe 
+            style="border: 0; width: 350px; height: 350px;" 
+            src="https://bandcamp.com/EmbeddedPlayer/track=979445113/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
+            seamless>
+            <a href="https://dinastiamoon.bandcamp.com/track/spaghetti-western-3">SPAGHETTI WESTERN de Dinastía Moon</a>
+          </iframe>
+          
+          <iframe 
+            style="border: 0; width: 350px; height: 350px;" 
+            src="https://bandcamp.com/EmbeddedPlayer/track=2103735496/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
+            seamless>
+            <a href="https://dinastiamoon.bandcamp.com/track/isla-friendship">ISLA FRIENDSHIP de Dinastía Moon</a>
+          </iframe>
+          
+          <iframe 
+            style="border: 0; width: 350px; height: 350px;" 
+            src="https://bandcamp.com/EmbeddedPlayer/track=4275410357/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
+            seamless>
+            <a href="https://dinastiamoon.bandcamp.com/track/kepler">KEPLER de Dinastía Moon</a>
+          </iframe>
+          
+          <iframe 
+            style="border: 0; width: 350px; height: 350px;" 
+            src="https://bandcamp.com/EmbeddedPlayer/track=1110235795/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
+            seamless>
+            <a href="https://dinastiamoon.bandcamp.com/track/cosmonauta">COSMONAUTA de Dinastía Moon</a>
+          </iframe>
+          
+          <iframe 
+            style="border: 0; width: 350px; height: 350px;" 
+            src="https://bandcamp.com/EmbeddedPlayer/album=2788105991/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
+            seamless>
+            <a href="https://dinastiamoon.bandcamp.com/album/coscoroba-ep">COSCOROBA EP de Dinastía Moon</a>
+          </iframe>
+          
+          <iframe 
+            style="border: 0; width: 350px; height: 350px;" 
+            src="https://bandcamp.com/EmbeddedPlayer/track=1940190945/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
+            seamless>
+            <a href="https://dinastiamoon.bandcamp.com/track/desierto-paralelo-33-2">DESIERTO PARALELO 33 de Dinastía Moon</a>
+          </iframe>
+          
+          <iframe 
+            style="border: 0; width: 350px; height: 350px;" 
+            src="https://bandcamp.com/EmbeddedPlayer/track=1627307893/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
+            seamless>
+            <a href="https://dinastiamoon.bandcamp.com/track/mycelium-3">MYCELIUM de Dinastía Moon</a>
+          </iframe>
+        </div>
       </div>
     </div>
   </section>
@@ -87,6 +106,40 @@
   filter: blur(2px);
 }
 
+.content-wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  z-index: 2;
+  position: relative;
+  margin: 0 2rem;
+}
+
+.buttons-container {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+.nav-button {
+  display: block;
+  transition: transform 0.3s ease, filter 0.3s ease;
+  text-decoration: none;
+}
+
+.nav-button:hover {
+  transform: scale(1.1);
+  filter: brightness(1.2);
+}
+
+.nav-button img {
+  width: 120px;
+  height: 60px;
+  object-fit: cover;
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));
+}
+
 .content-box {
   background: white;
   color: #333;
@@ -94,10 +147,7 @@
   border-radius: 1rem;
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
   text-align: center;
-  z-index: 2;
-  position: relative;
   max-width: 1200px;
-  margin: 0 2rem;
 }
 
 .content-box h1 {
@@ -136,6 +186,24 @@
   }
 }
 
+@media (max-width: 768px) {
+  .bandmate-section {
+    height: auto;
+    min-height: 100vh;
+    padding: 2rem 0;
+  }
+
+  .buttons-container {
+    gap: 1rem;
+  }
+  
+  .nav-button img {
+    width: 80px;
+    height: 40px;
+    object-fit: cover;
+  }
+}
+
 @media (max-width: 640px) {
   .iframe-grid {
     grid-template-columns: 1fr;
@@ -144,6 +212,19 @@
   .iframe-grid iframe {
     width: 280px !important;
     height: 280px !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .buttons-container {
+    flex-wrap: wrap;
+    gap: 0.8rem;
+  }
+  
+  .nav-button img {
+    width: 70px;
+    height: 35px;
+    object-fit: cover;
   }
 }
 </style>

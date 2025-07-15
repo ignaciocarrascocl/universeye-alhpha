@@ -60,6 +60,10 @@ const maxEyeTravelX = 275
 const maxEyeTravelY = 100
 let maxDist
 
+// Cache del tamaño del ojo para evitar cambios incorrectos en móvil
+let cachedEyeSize = null
+let lastViewportWidth = null
+
 // WebGL variables
 let gl, program, start
 let timeLoc, resLoc, posLoc, quadVBO, interactionPointsLoc, numInteractionsLoc
@@ -603,6 +607,10 @@ function handleResize() {
     updateEyeCenter()
 }
 
+function handleScroll() {
+    updateEyeCenter()
+}
+
 function updateEyeCenter() {
     if (!mainEye.value) return
 
@@ -624,13 +632,38 @@ function updateEyeCenter() {
 function updateLogoSize(eyeRect) {
     if (!logoContainer.value) return
     
-    // Calculate logo size as 80% bigger than the eye (1.8x)
-    const eyeSize = Math.min(eyeRect.width, eyeRect.height)
-    const logoSize = eyeSize * 3
+    // Verificar si el viewport width cambió (indicando un verdadero cambio de tamaño vs scroll)
+    const currentViewportWidth = window.innerWidth
+    const shouldRecalculate = lastViewportWidth === null || Math.abs(currentViewportWidth - lastViewportWidth) > 10
     
-    // Apply the calculated size to the logo container
-    logoContainer.value.style.width = `${logoSize}px`
-    logoContainer.value.style.height = `${logoSize}px`
+    // En móvil, solo recalcular si es necesario
+    if (window.innerWidth <= 768 && !shouldRecalculate && cachedEyeSize !== null) {
+        // Usar el tamaño cacheado en móvil para evitar cambios durante scroll
+        logoContainer.value.style.width = `${cachedEyeSize}px`
+        logoContainer.value.style.height = `${cachedEyeSize}px`
+    } else {
+        // Recalcular el tamaño del logo
+        const eyeSize = Math.min(eyeRect.width, eyeRect.height)
+        let logoSize = eyeSize * 3
+        
+        // Mantener el tamaño del logo igual en móvil
+        if (window.innerWidth <= 768) {
+            logoSize = logoSize * 1
+            cachedEyeSize = logoSize // Cache el tamaño calculado
+        }
+        
+        // Apply the calculated size to the logo container
+        logoContainer.value.style.width = `${logoSize}px`
+        logoContainer.value.style.height = `${logoSize}px`
+        
+        // En desktop, actualizar el cache también
+        if (window.innerWidth > 768) {
+            cachedEyeSize = logoSize
+        }
+    }
+    
+    // Actualizar el último viewport width
+    lastViewportWidth = currentViewportWidth
     
     // Position logo at the exact center of the eye
     const eyeCenterX = eyeRect.left + eyeRect.width * 0.5
@@ -638,6 +671,20 @@ function updateLogoSize(eyeRect) {
     
     logoContainer.value.style.left = `${eyeCenterX}px`
     logoContainer.value.style.top = `${eyeCenterY}px`
+}
+
+// Computed property for eye active state
+const isDefaultActive = ref(false)
+
+// Function to handle eye click
+function handleEyeClick() {
+    applyPreset('default')
+    updateActiveState()
+}
+
+// Function to update active state
+function updateActiveState() {
+    isDefaultActive.value = currentPreset === 'default'
 }
 
 function throttled(fn) {
@@ -661,20 +708,6 @@ function clamp(value, min = 0, max = 1) {
     return value <= min ? min : value >= max ? max : value
 }
 
-// Computed property for eye active state
-const isDefaultActive = ref(false)
-
-// Function to handle eye click
-function handleEyeClick() {
-    applyPreset('default')
-    updateActiveState()
-}
-
-// Function to update active state
-function updateActiveState() {
-    isDefaultActive.value = currentPreset === 'default'
-}
-
 onMounted(() => {
     const throttledMouseMove = throttled(handleMouseMove)
     const throttledResize = throttled(handleResize)
@@ -689,15 +722,16 @@ onMounted(() => {
     window.addEventListener('touchmove', handleTouchMove, { passive: false })
     window.addEventListener('touchend', handleTouchEnd, { passive: false })
     
-    // Resize event
+    // Resize and scroll events
     window.addEventListener('resize', throttledResize)
+    window.addEventListener('scroll', handleScroll, { passive: true })
 
     // Initialize WebGL background
     if (initWebGL()) {
         requestAnimationFrame(renderWebGL)
     }
 
-    // Initial setup
+    // Simple initial setup with timeout
     setTimeout(() => {
         updateEyeCenter()
     }, 100)
@@ -714,8 +748,9 @@ onUnmounted(() => {
     window.removeEventListener('touchmove', handleTouchMove)
     window.removeEventListener('touchend', handleTouchEnd)
     
-    // Resize event
+    // Resize and scroll events
     window.removeEventListener('resize', handleResize)
+    window.removeEventListener('scroll', handleScroll)
 })
 </script>
 
@@ -750,6 +785,13 @@ onUnmounted(() => {
     z-index: 10;
     cursor: pointer;
     transition: filter 0.3s ease, transform 0.2s ease;
+}
+
+@media (max-width: 768px) {
+    .eye-container {
+        width: min(150px, 40vw);
+        height: min(150px, 40vh);
+    }
 }
 
 .eye-container:hover {

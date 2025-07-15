@@ -47,13 +47,15 @@
 }
 
 @media (max-width: 768px) {
+  .video-section {
+    height: auto;
+    min-height: 100vh;
+    padding: 1rem;
+  }
+  
   .video-container {
     width: 95%;
     max-width: 100%;
-  }
-  
-  .video-section {
-    padding: 1rem;
   }
 }
 </style>

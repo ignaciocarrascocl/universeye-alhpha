@@ -17,6 +17,13 @@ import ThreeScene from './ThreeScene.vue'
   overflow: hidden;
 }
 
+@media (max-width: 768px) {
+  .home-section {
+    height: auto;
+    min-height: 100vh;
+  }
+}
+
 .home-content {
   position: absolute;
   bottom: 10%;
