@@ -1,16 +1,16 @@
 <template>
   <div class="band-ui">
     <div class="social-icons">
-      <a href="#" class="social-icon" @click="openSocial('instagram')">
+      <a href="https://instagram.com/dinastiamoon" target="_blank" class="social-icon">
         <vue-feather type="instagram" size="24" />
       </a>
-      <a href="#" class="social-icon" @click="openSocial('twitter')">
-        <vue-feather type="twitter" size="24" />
+      <a href="https://dinastiamoon.bandcamp.com" target="_blank" class="social-icon">
+        <vue-feather type="music" size="24" />
       </a>
-      <a href="#" class="social-icon" @click="openSocial('facebook')">
+      <a href="https://facebook.com/dinastiamoon" target="_blank" class="social-icon">
         <vue-feather type="facebook" size="24" />
       </a>
-      <a href="#" class="social-icon" @click="openSocial('youtube')">
+      <a href="https://youtube.com/@dinastiamoon" target="_blank" class="social-icon">
         <vue-feather type="youtube" size="24" />
       </a>
     </div>
@@ -19,11 +19,6 @@
 
 <script setup>
 import VueFeather from 'vue-feather'
-
-const openSocial = (platform) => {
-  // Placeholder function for social media links
-  console.log(`Opening ${platform}`)
-}
 </script>
 
 <style scoped>

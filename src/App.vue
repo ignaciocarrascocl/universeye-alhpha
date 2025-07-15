@@ -1,11 +1,17 @@
 <script setup>
-import ThreeScene from './components/ThreeScene.vue'
+import HomeSection from './components/HomeSection.vue'
 import BandUI from './components/BandUI.vue'
+import VideoSection from './components/VideoSection.vue'
+import BandmateSection from './components/BandmateSection.vue'
+import FloatingIcons from './components/FloatingIcons.vue'
 </script>
 
 <template>
-  <ThreeScene />
+  <HomeSection />
+  <VideoSection />
+  <BandmateSection />
   <BandUI />
+  <FloatingIcons />
 </template>
 
 <style scoped>

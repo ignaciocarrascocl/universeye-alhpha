@@ -26,8 +26,8 @@
         </div>
 
         <!-- Single eye in center -->
-        <div class="eye-container">
-            <svg ref="mainEye" class="eye main-eye" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"
+        <div class="eye-container" @click="handleEyeClick" title="Default Preset">
+            <svg ref="mainEye" class="eye main-eye" :class="{ 'active-preset': isDefaultActive }" viewBox="0 0 1000 1000" xmlns="http://www.w3.org/2000/svg"
                 fill="black">
                 <clipPath id="main-lids">
                     <path id="main-lids-path" stroke-linejoin="round" stroke-linecap="round"
@@ -48,7 +48,6 @@
 
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
-import { GUI } from 'lil-gui'
 
 const sceneContainer = ref(null)
 const mainEye = ref(null)
@@ -65,6 +64,7 @@ let maxDist
 let gl, program, start
 let timeLoc, resLoc, posLoc, quadVBO, interactionPointsLoc, numInteractionsLoc
 let numWavesLoc, waveAmplitudeLoc, waveSpeedLoc, radialFreqLoc, mixFactorLoc, combinedMultLoc, grainIntensityLoc
+let webglInitialized = false
 
 // Interaction tracking
 const MAX_INTERACTIONS = 10
@@ -82,7 +82,83 @@ const guiControls = {
     grainIntensity: 0.25
 }
 
-let gui = null
+// Presets definition
+const presets = {
+    default: {
+        numWaves: 30.0,
+        waveAmplitude: 0.1,
+        waveSpeed: 6.0,
+        radialFreq: 20.0,
+        mixFactor: 0.3,
+        combinedMult: 4.0,
+        grainIntensity: 0.25
+    },
+    cosmic: {
+        numWaves: 60.0,
+        waveAmplitude: 0.3,
+        waveSpeed: 12.0,
+        radialFreq: 35.0,
+        mixFactor: 0.7,
+        combinedMult: 8.0,
+        grainIntensity: 0.4
+    },
+    minimal: {
+        numWaves: 8.0,
+        waveAmplitude: 0.05,
+        waveSpeed: 2.0,
+        radialFreq: 10.0,
+        mixFactor: 0.1,
+        combinedMult: 2.0,
+        grainIntensity: 0.1
+    },
+    psychedelic: {
+        numWaves: 80.0,
+        waveAmplitude: 0.5,
+        waveSpeed: 20.0,
+        radialFreq: 50.0,
+        mixFactor: 0.9,
+        combinedMult: 10.0,
+        grainIntensity: 0.6
+    },
+    wave: {
+        numWaves: 45.0,
+        waveAmplitude: 0.6,
+        waveSpeed: 15.0,
+        radialFreq: 25.0,
+        mixFactor: 0.8,
+        combinedMult: 6.0,
+        grainIntensity: 0.3
+    }
+}
+
+let currentPreset = 'default'
+
+// Function to apply preset
+function applyPreset(presetName) {
+    if (!presets[presetName]) return
+    
+    const preset = presets[presetName]
+    currentPreset = presetName
+    
+    // Update controls
+    Object.keys(preset).forEach(key => {
+        if (guiControls.hasOwnProperty(key)) {
+            guiControls[key] = preset[key]
+        }
+    })
+    
+    // Update active state
+    updateActiveState()
+    
+    console.log(`Applied preset: ${presetName}`)
+}
+
+// Define as global for parent component access
+window.ThreeScenePresets = {
+    applyPreset,
+    presets: Object.keys(presets),
+    currentPreset: () => currentPreset
+}
 
 // WebGL shader sources
 const vertexSrc = `
@@ -367,6 +443,7 @@ function initWebGL() {
     combinedMultLoc = gl.getUniformLocation(program, "u_combinedMult")
     grainIntensityLoc = gl.getUniformLocation(program, "u_grainIntensity")
 
+    webglInitialized = true
     return true
 }
 
@@ -412,33 +489,10 @@ function renderWebGL(now) {
     requestAnimationFrame(renderWebGL)
 }
 
-function initGUI() {
-    gui = new GUI()
-    gui.title('Controles de Espiral Visual')
-    
-    // Spiral Lines folder
-    const spiralFolder = gui.addFolder('Líneas Espirales')
-    spiralFolder.add(guiControls, 'numWaves', 5, 100, 1).name('Número de Ondas')
-    spiralFolder.add(guiControls, 'waveAmplitude', 0.0, 1.0, 0.01).name('Amplitud de Ondas')
-    spiralFolder.add(guiControls, 'waveSpeed', 0.1, 20.0, 0.1).name('Velocidad de Animación')
-    spiralFolder.add(guiControls, 'radialFreq', 5.0, 50.0, 1.0).name('Frecuencia Radial')
-    spiralFolder.add(guiControls, 'mixFactor', 0.0, 1.0, 0.01).name('Factor de Mezcla')
-    spiralFolder.add(guiControls, 'combinedMult', 1.0, 10.0, 0.1).name('Multiplicador de Patrón')
-    spiralFolder.open()
-    
-    // Effects folder
-    const effectsFolder = gui.addFolder('Efectos Visuales')
-    effectsFolder.add(guiControls, 'grainIntensity', 0.0, 1.0, 0.01).name('Intensidad de Grano')
-    effectsFolder.open()
-    
-    // Position GUI in top right corner
-    gui.domElement.style.position = 'fixed'
-    gui.domElement.style.top = '20px'
-    gui.domElement.style.right = '20px'
-    gui.domElement.style.zIndex = '10000'
-}
-
 function addInteraction(x, y, intensity = 1.0) {
+    // Don't add interactions if WebGL is not initialized
+    if (!webglInitialized || !gl) return
+    
     const currentTime = performance.now() * 0.001
     
     // Check if there's already an interaction very close to this position
@@ -482,6 +536,9 @@ function updateInteractions(currentTime) {
 }
 
 function handleMouseMove(event) {
+    // Don't process mouse events if WebGL is not initialized
+    if (!webglInitialized) return
+    
     mousePos.x = event.clientX
     mousePos.y = event.clientY
 
@@ -510,14 +567,17 @@ function handleMouseMove(event) {
 }
 
 function handleMouseEnter(event) {
+    if (!webglInitialized) return
     addInteraction(event.clientX, event.clientY, 1.0)
 }
 
 function handleMouseClick(event) {
+    if (!webglInitialized) return
     addInteraction(event.clientX, event.clientY, 1.5)
 }
 
 function handleTouchStart(event) {
+    if (!webglInitialized) return
     event.preventDefault()
     for (let i = 0; i < event.touches.length; i++) {
         const touch = event.touches[i]
@@ -526,6 +586,7 @@ function handleTouchStart(event) {
 }
 
 function handleTouchMove(event) {
+    if (!webglInitialized) return
     event.preventDefault()
     for (let i = 0; i < event.touches.length; i++) {
         const touch = event.touches[i]
@@ -600,6 +661,20 @@ function clamp(value, min = 0, max = 1) {
     return value <= min ? min : value >= max ? max : value
 }
 
+// Computed property for eye active state
+const isDefaultActive = ref(false)
+
+// Function to handle eye click
+function handleEyeClick() {
+    applyPreset('default')
+    updateActiveState()
+}
+
+// Function to update active state
+function updateActiveState() {
+    isDefaultActive.value = currentPreset === 'default'
+}
+
 onMounted(() => {
     const throttledMouseMove = throttled(handleMouseMove)
     const throttledResize = throttled(handleResize)
@@ -621,9 +696,6 @@ onMounted(() => {
     if (initWebGL()) {
         requestAnimationFrame(renderWebGL)
     }
-    
-    // Initialize GUI
-    initGUI()
 
     // Initial setup
     setTimeout(() => {
@@ -644,17 +716,12 @@ onUnmounted(() => {
     
     // Resize event
     window.removeEventListener('resize', handleResize)
-    
-    // Clean up GUI
-    if (gui) {
-        gui.destroy()
-    }
 })
 </script>
 
 <style scoped>
 .scene-container {
-    position: fixed;
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
@@ -681,6 +748,17 @@ onUnmounted(() => {
     width: min(300px, 80vw);
     height: min(300px, 80vh);
     z-index: 10;
+    cursor: pointer;
+    transition: filter 0.3s ease, transform 0.2s ease;
+}
+
+.eye-container:hover {
+    transform: translate(-50%, -50%) scale(1.05);
+    filter: drop-shadow(0 0 20px rgba(255, 255, 255, 0.5));
+}
+
+.eye-container .active-preset {
+    filter: drop-shadow(0 0 30px rgba(255, 255, 255, 0.8));
 }
 
 .eye {
