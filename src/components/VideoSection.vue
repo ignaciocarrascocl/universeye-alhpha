@@ -48,7 +48,7 @@ const showModal = ref(false);
 const youtubeUrl = ref('');
 
 // URL de YouTube con autoplay activado cuando se abre el modal
-const youtubeEmbedUrl = 'https://www.youtube.com/embed/NuJ5FoNeBBE?autoplay=1';
+const youtubeEmbedUrl = 'https://www.youtube.com/embed/MIN5m44J1Ro?autoplay=1&list=RDMIN5m44J1Ro&start_radio=1';
 
 onMounted(() => {
   // Iniciar reproducción del video placeholder
