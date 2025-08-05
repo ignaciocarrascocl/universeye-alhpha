@@ -29,7 +29,7 @@ import FloatingIcons from './components/FloatingIcons.vue'
   transform: translateX(-50%);
   background: rgba(0,0,0,0.85);
   color: #fff;
-  font-size: 1rem;
+  font-size: 0.9rem;
   text-align: center;
   padding: 0.5rem 1.2rem;
   z-index: 2000;
