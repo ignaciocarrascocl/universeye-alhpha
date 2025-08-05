@@ -191,28 +191,28 @@ onUnmounted(() => {
 
 @media (max-width: 480px) {
   .floating-icon {
-    width: 60px;
-    height: 60px;
+    width: 40px;
+    height: 40px;
   }
   
   .top-left {
-    top: 40px;
-    left: 40px;
+    top: 20px;
+    left: 20px;
   }
 
   .top-right {
-    top: 40px;
-    right: 40px;
+    top: 20px;
+    right: 20px;
   }
 
   .bottom-left {
-    bottom: 40px;
-    left: 40px;
+    bottom: 60px;
+    left: 20px;
   }
 
   .bottom-right {
-    bottom: 40px;
-    right: 40px;
+    bottom: 60px;
+    right: 20px;
   }
 }
 </style>
