@@ -127,13 +127,13 @@ const presets = {
         grainIntensity: 0.6
     },
     wave: {
-        numWaves: 45.0,
-        waveAmplitude: 0.6,
-        waveSpeed: 15.0,
-        radialFreq: 25.0,
-        mixFactor: 0.8,
-        combinedMult: 6.0,
-        grainIntensity: 0.3
+        numWaves: 200.0,
+        waveAmplitude: 0.1,
+        waveSpeed: 5.0,
+        radialFreq: 200.0,
+        mixFactor: 0.5,
+        combinedMult: 50.0,
+        grainIntensity: 0.0
     }
 }
 
@@ -250,88 +250,98 @@ const fragmentSrc = `
     }
 
     void main(){
-      // Normalized UV & correct aspect
-      vec2 uv = v_uv;
-      vec2 p = uv - 0.5;
-      p.x *= u_resolution.x / u_resolution.y;
+      // Check if we're using the "wave" preset (black background)
+      bool isWavePreset = (u_numWaves >= 190.0 && u_radialFreq >= 190.0 && u_combinedMult >= 40.0);
+      
+      vec3 col;
+      
+      if (isWavePreset) {
+        // For wave preset, start with pure black background
+        col = vec3(0.0);
+      } else {
+        // Normalized UV & correct aspect
+        vec2 uv = v_uv;
+        vec2 p = uv - 0.5;
+        p.x *= u_resolution.x / u_resolution.y;
 
-      // Dynamic kaleidoscope
-      float segs = mix(3.0, 12.0, sin(u_time * 0.12) * 0.5 + 0.5);
-      float ang = atan(p.y, p.x);
-      float rad = length(p);
-      ang = mod(ang, 2.0 * PI / segs) - (PI / segs);
-      p = rad * vec2(cos(ang), sin(ang));
+        // Dynamic kaleidoscope
+        float segs = mix(3.0, 12.0, sin(u_time * 0.12) * 0.5 + 0.5);
+        float ang = atan(p.y, p.x);
+        float rad = length(p);
+        ang = mod(ang, 2.0 * PI / segs) - (PI / segs);
+        p = rad * vec2(cos(ang), sin(ang));
 
-      // Multi-layered swirl
-      vec2 q = p;
-      for(int i = 0; i < 3; i++){
-        float a = fbm(q * (3.0 + float(i)) + u_time * (0.15 * float(i+1))) * 6.2831;
-        q = mat2(cos(a), -sin(a), sin(a), cos(a)) * q;
-      }
-
-      // Radial FBM distortion
-      float distortion = fbm(q * 5.0 + u_time * 0.3);
-      vec2 finalUv = uv + q * distortion * 0.45;
-
-      // Base pattern + time warp
-      float T = u_time * 0.2;
-      float n = fbm(finalUv * 4.0 + T);
-
-      // Create colorful background using palette
-      vec3 col = palette(n + T);
-
-      // Apply interaction effects using original UV coordinates (before distortion)
-      if (u_numInteractions > 0) {
-        vec3 hsv = rgb2hsv(col);
-        float totalHueShift = 0.0;
-        float totalSatBoost = 0.0;
-        float totalWeight = 0.0;
-
-        // Process each interaction point
-        for (int i = 0; i < ${MAX_INTERACTIONS}; i++) {
-          if (i >= u_numInteractions) break;
-          
-          vec4 interaction = u_interactions[i];
-          vec2 interactionPos = interaction.xy;
-          float intensity = interaction.z;
-          float time = interaction.w;
-          
-          // Convert interaction position to UV coordinates
-          vec2 interactionUV = interactionPos / u_resolution;
-          // Flip Y coordinate to match screen coordinates
-          interactionUV.y = 1.0 - interactionUV.y;
-          
-          // Calculate distance from current pixel to interaction point using original UV
-          vec2 screenUV = v_uv;
-          vec2 diff = screenUV - interactionUV;
-          diff.x *= u_resolution.x / u_resolution.y; // Correct aspect ratio
-          float dist = length(diff);
-          
-          // Define interaction radius (normalized)
-          float radius = 0.2;
-          
-          // Calculate falloff based on distance and time
-          float falloff = smoothFalloff(dist, radius);
-          float timeFade = exp(-time * 2.0); // Exponential fade over time
-          
-          float weight = falloff * intensity * timeFade;
-          
-          if (weight > 0.01) {
-            // Create unique hue shift based on interaction position
-            float hueShift = sin(interactionPos.x * 0.01 + interactionPos.y * 0.01 + time * 3.0) * 0.3;
-            float saturationBoost = 0.4;
-            
-            totalHueShift += hueShift * weight;
-            totalSatBoost += saturationBoost * weight;
-            totalWeight += weight;
-          }
+        // Multi-layered swirl
+        vec2 q = p;
+        for(int i = 0; i < 3; i++){
+          float a = fbm(q * (3.0 + float(i)) + u_time * (0.15 * float(i+1))) * 6.2831;
+          q = mat2(cos(a), -sin(a), sin(a), cos(a)) * q;
         }
-        
-        // Apply accumulated effects
-        if (totalWeight > 0.0) {
-          hsv.x = fract(hsv.x + totalHueShift);
-          hsv.y = clamp(hsv.y + totalSatBoost, 0.0, 1.0);
-          col = hsv2rgb(hsv);
+
+        // Radial FBM distortion
+        float distortion = fbm(q * 5.0 + u_time * 0.3);
+        vec2 finalUv = uv + q * distortion * 0.45;
+
+        // Base pattern + time warp
+        float T = u_time * 0.2;
+        float n = fbm(finalUv * 4.0 + T);
+
+        // Create colorful background using palette
+        col = palette(n + T);
+
+        // Apply interaction effects using original UV coordinates (before distortion)
+        if (u_numInteractions > 0) {
+          vec3 hsv = rgb2hsv(col);
+          float totalHueShift = 0.0;
+          float totalSatBoost = 0.0;
+          float totalWeight = 0.0;
+
+          // Process each interaction point
+          for (int i = 0; i < ${MAX_INTERACTIONS}; i++) {
+            if (i >= u_numInteractions) break;
+            
+            vec4 interaction = u_interactions[i];
+            vec2 interactionPos = interaction.xy;
+            float intensity = interaction.z;
+            float time = interaction.w;
+            
+            // Convert interaction position to UV coordinates
+            vec2 interactionUV = interactionPos / u_resolution;
+            // Flip Y coordinate to match screen coordinates
+            interactionUV.y = 1.0 - interactionUV.y;
+            
+            // Calculate distance from current pixel to interaction point using original UV
+            vec2 screenUV = v_uv;
+            vec2 diff = screenUV - interactionUV;
+            diff.x *= u_resolution.x / u_resolution.y; // Correct aspect ratio
+            float dist = length(diff);
+            
+            // Define interaction radius (normalized)
+            float radius = 0.2;
+            
+            // Calculate falloff based on distance and time
+            float falloff = smoothFalloff(dist, radius);
+            float timeFade = exp(-time * 2.0); // Exponential fade over time
+            
+            float weight = falloff * intensity * timeFade;
+            
+            if (weight > 0.01) {
+              // Create unique hue shift based on interaction position
+              float hueShift = sin(interactionPos.x * 0.01 + interactionPos.y * 0.01 + time * 3.0) * 0.3;
+              float saturationBoost = 0.4;
+              
+              totalHueShift += hueShift * weight;
+              totalSatBoost += saturationBoost * weight;
+              totalWeight += weight;
+            }
+          }
+          
+          // Apply accumulated effects
+          if (totalWeight > 0.0) {
+            hsv.x = fract(hsv.x + totalHueShift);
+            hsv.y = clamp(hsv.y + totalSatBoost, 0.0, 1.0);
+            col = hsv2rgb(hsv);
+          }
         }
       }
 
@@ -367,8 +377,11 @@ const fragmentSrc = `
       col = mix(col, vec3(0.0), allSpirals);
 
       // Heavy grain (GUI controlled intensity)
-      float g = (noise(finalUv * u_resolution * 0.5 + u_time) - 0.5) * u_grainIntensity;
-      col += g;
+      if (!isWavePreset) {
+        vec2 finalUv = v_uv;
+        float g = (noise(finalUv * u_resolution * 0.5 + u_time) - 0.5) * u_grainIntensity;
+        col += g;
+      }
 
       gl_FragColor = vec4(col, 1.0);
     }`
