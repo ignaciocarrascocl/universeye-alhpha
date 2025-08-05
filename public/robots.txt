@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+# Sitemap
+Sitemap: https://dinastiamoon.cl/sitemap.xml
+
+# Disallow certain file types
+Disallow: *.json
+Disallow: *.js.map
+Disallow: *.css.map
+
+# Allow specific directories
+Allow: /public/
+Allow: /assets/
+Allow: /*.css
+Allow: /*.js
+Allow: /*.webp
+Allow: /*.mp4
+Allow: /*.svg

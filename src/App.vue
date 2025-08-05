@@ -7,6 +7,14 @@ import FloatingIcons from './components/FloatingIcons.vue'
 </script>
 
 <template>
+  <!-- Hidden SEO content about the band -->
+  <section class="seo-content" aria-hidden="true">
+    <h1>Dinastía Moon - Banda Chilena de Música Psicodélica</h1>
+    <p>Dinastía Moon es una innovadora banda chilena especializada en música psicodélica y experimental. Fusionando sonidos únicos con melodías envolventes, la banda ha creado un estilo distintivo que transporta a los oyentes a paisajes sonoros únicos.</p>
+    <p>Con canciones como "Spaghetti Western", "Isla Friendship", "Kepler", "Cosmonauta" y "Mycelium", Dinastía Moon explora territorios musicales inexplorados, combinando elementos del rock psicodélico con experimentación sonora contemporánea.</p>
+    <p>La banda está disponible en plataformas como Bandcamp, YouTube, Instagram y Facebook, donde comparten su música y videos únicos con una creciente base de fanáticos.</p>
+  </section>
+  
   <HomeSection />
   <VideoSection />
   <BandmateSection />
@@ -21,6 +29,16 @@ import FloatingIcons from './components/FloatingIcons.vue'
 </template>
 
 <style scoped>
+/* Hidden SEO content for search engines */
+.seo-content {
+  position: absolute;
+  left: -10000px;
+  top: 0;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 /* No additional styles needed - just the particle background */
 .copyright-bar {
   position: fixed;

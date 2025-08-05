@@ -1,0 +1,33 @@
+{
+  "name": "Dinastía Moon - Banda Chilena de Música Psicodélica",
+  "short_name": "Dinastía Moon",
+  "description": "Dinastía Moon es una banda chilena de música psicodélica que fusiona sonidos experimentales con melodías envolventes.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#000000",
+  "theme_color": "#000000",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.ico",
+      "sizes": "64x64 32x32 24x24 16x16",
+      "type": "image/x-icon"
+    },
+    {
+      "src": "/Dinastia.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["music", "entertainment"],
+  "lang": "es-CL",
+  "dir": "ltr",
+  "scope": "/",
+  "related_applications": [
+    {
+      "platform": "web",
+      "url": "https://dinastiamoon.bandcamp.com"
+    }
+  ]
+}

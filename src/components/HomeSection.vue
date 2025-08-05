@@ -1,8 +1,13 @@
 <template>
-  <section class="home-section">
+  <main class="home-section" role="main">
     <ThreeScene />
-    <div class="home-bottom-edge"></div>
-  </section>
+    <!-- SEO Content for the band -->
+    <header class="visually-hidden">
+      <h1>Dinastía Moon - Banda Chilena de Música Psicodélica</h1>
+      <p>Descubre la música experimental y psicodélica de Dinastía Moon, una banda chilena que fusiona sonidos únicos con melodías envolventes.</p>
+    </header>
+    <div class="home-bottom-edge" aria-hidden="true"></div>
+  </main>
 </template>
 
 <script setup>
@@ -14,6 +19,16 @@ import ThreeScene from './ThreeScene.vue'
   min-width: 100vw;
   min-height: 100vh;
   position: relative;
+  overflow: hidden;
+}
+
+/* SEO content hidden visually but accessible to screen readers and search engines */
+.visually-hidden {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
   overflow: hidden;
 }
 

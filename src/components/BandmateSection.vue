@@ -1,77 +1,101 @@
 <template>
-  <section class="bandmate-section">
-    <div class="bandmate-top-edge"></div>
-    <video autoplay muted loop class="background-video">
+  <section class="bandmate-section" id="musica" role="region" aria-labelledby="music-heading">
+    <div class="bandmate-top-edge" aria-hidden="true"></div>
+    <video autoplay muted loop class="background-video" aria-hidden="true">
       <source src="/Looping_Animation_Generation_Complete.mp4" type="video/mp4">
     </video>
     
     <div class="content-wrapper">
-      <!-- Buttons above the content box -->
-      <div class="buttons-container">
-        <a href="#" class="nav-button">
+      <h2 id="music-heading" class="visually-hidden">Música de Dinastía Moon</h2>
+      
+      <!-- Navigation buttons above the content box -->
+      <nav class="buttons-container" role="navigation" aria-label="Navegación principal">
+        <a href="#merch" class="nav-button" aria-label="Merchandising de Dinastía Moon">
           <img src="/boton_merch.webp" alt="Merch" loading="eager" />
         </a>
-        <a href="#" class="nav-button">
+        <a href="#musica" class="nav-button" aria-label="Música de Dinastía Moon">
           <img src="/boton_musica.webp" alt="Música" loading="eager" />
         </a>
-        <a href="#" class="nav-button">
+        <a href="#tour" class="nav-button" aria-label="Fechas de tour de Dinastía Moon">
           <img src="/boton_tour.webp" alt="Tour" loading="eager" />
         </a>
-        <a href="#" class="nav-button">
+        <a href="#videos" class="nav-button" aria-label="Videos de Dinastía Moon">
           <img src="/boton_videos.webp" alt="Videos" loading="eager" />
         </a>
-      </div>
+      </nav>
       
       <div class="content-box">
-        <div class="iframe-grid">
-          <iframe 
-            style="border: 0; width: 350px; height: 350px;" 
-            src="https://bandcamp.com/EmbeddedPlayer/track=979445113/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
-            seamless>
-            <a href="https://dinastiamoon.bandcamp.com/track/spaghetti-western-3">SPAGHETTI WESTERN de Dinastía Moon</a>
-          </iframe>
+        <h3 class="visually-hidden">Discografía de Dinastía Moon en Bandcamp</h3>
+        <div class="iframe-grid" role="grid" aria-label="Reproductor de música de Dinastía Moon">
+          <div role="gridcell">
+            <iframe 
+              style="border: 0; width: 350px; height: 350px;" 
+              src="https://bandcamp.com/EmbeddedPlayer/track=979445113/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
+              seamless
+              title="SPAGHETTI WESTERN - Dinastía Moon - Música psicodélica chilena">
+              <a href="https://dinastiamoon.bandcamp.com/track/spaghetti-western-3">SPAGHETTI WESTERN de Dinastía Moon</a>
+            </iframe>
+          </div>
           
-          <iframe 
-            style="border: 0; width: 350px; height: 350px;" 
-            src="https://bandcamp.com/EmbeddedPlayer/track=2103735496/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
-            seamless>
-            <a href="https://dinastiamoon.bandcamp.com/track/isla-friendship">ISLA FRIENDSHIP de Dinastía Moon</a>
-          </iframe>
+          <div role="gridcell">
+            <iframe 
+              style="border: 0; width: 350px; height: 350px;" 
+              src="https://bandcamp.com/EmbeddedPlayer/track=2103735496/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
+              seamless
+              title="ISLA FRIENDSHIP - Dinastía Moon - Música psicodélica chilena">
+              <a href="https://dinastiamoon.bandcamp.com/track/isla-friendship">ISLA FRIENDSHIP de Dinastía Moon</a>
+            </iframe>
+          </div>
           
-          <iframe 
-            style="border: 0; width: 350px; height: 350px;" 
-            src="https://bandcamp.com/EmbeddedPlayer/track=4275410357/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
-            seamless>
-            <a href="https://dinastiamoon.bandcamp.com/track/kepler">KEPLER de Dinastía Moon</a>
-          </iframe>
+          <div role="gridcell">
+            <iframe 
+              style="border: 0; width: 350px; height: 350px;" 
+              src="https://bandcamp.com/EmbeddedPlayer/track=4275410357/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
+              seamless
+              title="KEPLER - Dinastía Moon - Música psicodélica chilena">
+              <a href="https://dinastiamoon.bandcamp.com/track/kepler">KEPLER de Dinastía Moon</a>
+            </iframe>
+          </div>
           
-          <iframe 
-            style="border: 0; width: 350px; height: 350px;" 
-            src="https://bandcamp.com/EmbeddedPlayer/track=1110235795/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
-            seamless>
-            <a href="https://dinastiamoon.bandcamp.com/track/cosmonauta">COSMONAUTA de Dinastía Moon</a>
-          </iframe>
+          <div role="gridcell">
+            <iframe 
+              style="border: 0; width: 350px; height: 350px;" 
+              src="https://bandcamp.com/EmbeddedPlayer/track=1110235795/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
+              seamless
+              title="COSMONAUTA - Dinastía Moon - Música psicodélica chilena">
+              <a href="https://dinastiamoon.bandcamp.com/track/cosmonauta">COSMONAUTA de Dinastía Moon</a>
+            </iframe>
+          </div>
           
-          <iframe 
-            style="border: 0; width: 350px; height: 350px;" 
-            src="https://bandcamp.com/EmbeddedPlayer/album=2788105991/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
-            seamless>
-            <a href="https://dinastiamoon.bandcamp.com/album/coscoroba-ep">COSCOROBA EP de Dinastía Moon</a>
-          </iframe>
+          <div role="gridcell">
+            <iframe 
+              style="border: 0; width: 350px; height: 350px;" 
+              src="https://bandcamp.com/EmbeddedPlayer/album=2788105991/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
+              seamless
+              title="COSCOROBA EP - Dinastía Moon - Música psicodélica chilena">
+              <a href="https://dinastiamoon.bandcamp.com/album/coscoroba-ep">COSCOROBA EP de Dinastía Moon</a>
+            </iframe>
+          </div>
           
-          <iframe 
-            style="border: 0; width: 350px; height: 350px;" 
-            src="https://bandcamp.com/EmbeddedPlayer/track=1940190945/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
-            seamless>
-            <a href="https://dinastiamoon.bandcamp.com/track/desierto-paralelo-33-2">DESIERTO PARALELO 33 de Dinastía Moon</a>
-          </iframe>
+          <div role="gridcell">
+            <iframe 
+              style="border: 0; width: 350px; height: 350px;" 
+              src="https://bandcamp.com/EmbeddedPlayer/track=1940190945/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
+              seamless
+              title="DESIERTO PARALELO 33 - Dinastía Moon - Música psicodélica chilena">
+              <a href="https://dinastiamoon.bandcamp.com/track/desierto-paralelo-33-2">DESIERTO PARALELO 33 de Dinastía Moon</a>
+            </iframe>
+          </div>
           
-          <iframe 
-            style="border: 0; width: 350px; height: 350px;" 
-            src="https://bandcamp.com/EmbeddedPlayer/track=1627307893/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
-            seamless>
-            <a href="https://dinastiamoon.bandcamp.com/track/mycelium-3">MYCELIUM de Dinastía Moon</a>
-          </iframe>
+          <div role="gridcell">
+            <iframe 
+              style="border: 0; width: 350px; height: 350px;" 
+              src="https://bandcamp.com/EmbeddedPlayer/track=1627307893/size=large/bgcol=333333/linkcol=ffffff/minimal=true/transparent=true/" 
+              seamless
+              title="MYCELIUM - Dinastía Moon - Música psicodélica chilena">
+              <a href="https://dinastiamoon.bandcamp.com/track/mycelium-3">MYCELIUM de Dinastía Moon</a>
+            </iframe>
+          </div>
         </div>
       </div>
     </div>
@@ -83,6 +107,16 @@
 </script>
 
 <style scoped>
+/* SEO content hidden visually but accessible to screen readers and search engines */
+.visually-hidden {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .bandmate-section {
   min-width: 100vw;
   min-height: 100vh;

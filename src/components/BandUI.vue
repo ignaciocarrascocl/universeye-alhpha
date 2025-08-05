@@ -1,20 +1,24 @@
 <template>
-  <div class="band-ui">
-    <div class="social-icons">
-      <a href="https://instagram.com/dinastiamoon" target="_blank" class="social-icon">
-        <vue-feather type="instagram" size="24" />
+  <aside class="band-ui" role="complementary" aria-label="Redes sociales de Dinastía Moon">
+    <nav class="social-icons" role="navigation" aria-label="Enlaces a redes sociales">
+      <a href="https://instagram.com/dinastiamoon" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Seguir a Dinastía Moon en Instagram">
+        <vue-feather type="instagram" size="24" aria-hidden="true" />
+        <span class="visually-hidden">Instagram</span>
       </a>
-      <a href="https://dinastiamoon.bandcamp.com" target="_blank" class="social-icon">
-        <vue-feather type="music" size="24" />
+      <a href="https://dinastiamoon.bandcamp.com" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Escuchar música de Dinastía Moon en Bandcamp">
+        <vue-feather type="music" size="24" aria-hidden="true" />
+        <span class="visually-hidden">Bandcamp</span>
       </a>
-      <a href="https://facebook.com/dinastiamoon" target="_blank" class="social-icon">
-        <vue-feather type="facebook" size="24" />
+      <a href="https://facebook.com/dinastiamoon" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Seguir a Dinastía Moon en Facebook">
+        <vue-feather type="facebook" size="24" aria-hidden="true" />
+        <span class="visually-hidden">Facebook</span>
       </a>
-      <a href="https://youtube.com/@dinastiamoon" target="_blank" class="social-icon">
-        <vue-feather type="youtube" size="24" />
+      <a href="https://youtube.com/@dinastiamoon" target="_blank" rel="noopener noreferrer" class="social-icon" aria-label="Ver videos de Dinastía Moon en YouTube">
+        <vue-feather type="youtube" size="24" aria-hidden="true" />
+        <span class="visually-hidden">YouTube</span>
       </a>
-    </div>
-  </div>
+    </nav>
+  </aside>
 </template>
 
 <script setup>
@@ -22,6 +26,16 @@ import VueFeather from 'vue-feather'
 </script>
 
 <style scoped>
+/* SEO content hidden visually but accessible to screen readers and search engines */
+.visually-hidden {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .band-ui {
   position: fixed;
   top: 50%;

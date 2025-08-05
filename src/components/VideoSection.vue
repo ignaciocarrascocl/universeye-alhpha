@@ -1,5 +1,7 @@
 <template>
-  <section class="video-section">
+  <section class="video-section" id="videos" role="region" aria-labelledby="videos-heading">
+    <h2 id="videos-heading" class="visually-hidden">Videos Musicales de Dinastía Moon</h2>
+    
     <div class="video-container" @click="openModal">
       <!-- Placeholder video local -->
       <video 
@@ -8,28 +10,35 @@
         muted
         loop
         playsinline
+        aria-label="Video promocional de Dinastía Moon"
    >
         <source src="/placeholder.mp4" type="video/mp4">
       </video>
       
       <!-- Overlay de play -->
-      <div class="play-overlay">
-        <svg class="play-icon" viewBox="0 0 24 24" fill="white">
+      <div class="play-overlay" aria-hidden="true">
+        <svg class="play-icon" viewBox="0 0 24 24" fill="white" aria-hidden="true">
           <path d="M8 5v14l11-7z"/>
         </svg>
       </div>
+      
+      <!-- Botón accesible para reproducir video -->
+      <button class="play-button" aria-label="Reproducir video musical de Dinastía Moon">
+        <span class="visually-hidden">Reproducir video</span>
+      </button>
     </div>
     
     <!-- Modal de YouTube -->
-    <div class="video-modal" v-if="showModal" @click="closeModal">
+    <div class="video-modal" v-if="showModal" @click="closeModal" role="dialog" aria-modal="true" aria-labelledby="video-modal-title">
       <div class="modal-content" @click.stop>
-        <button class="close-button" @click="closeModal">&times;</button>
+        <h3 id="video-modal-title" class="visually-hidden">Video Musical de Dinastía Moon</h3>
+        <button class="close-button" @click="closeModal" aria-label="Cerrar video">&times;</button>
         <div class="youtube-container">
           <iframe 
             width="560" 
             height="315" 
             :src="youtubeUrl" 
-            title="YouTube video player" 
+            title="Video musical de Dinastía Moon - Banda chilena de música psicodélica" 
             frameborder="0" 
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
             allowfullscreen>
@@ -77,6 +86,16 @@ const closeModal = () => {
 </script>
 
 <style scoped>
+/* SEO content hidden visually but accessible to screen readers and search engines */
+.visually-hidden {
+  position: absolute;
+  left: -10000px;
+  top: auto;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+
 .video-section {
   display: flex;
   align-items: center;
@@ -120,10 +139,24 @@ const closeModal = () => {
   justify-content: center;
   background-color: rgba(0, 0, 0, 0.3);
   transition: background-color 0.3s ease;
+  pointer-events: none;
 }
 
 .play-overlay:hover {
   background-color: rgba(0, 0, 0, 0.5);
+}
+
+/* Accessible play button */
+.play-button {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 10;
 }
 
 .play-icon {
