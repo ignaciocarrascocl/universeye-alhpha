@@ -77,25 +77,27 @@ let interactionData = new Float32Array(MAX_INTERACTIONS * 4) // x, y, intensity,
 
 // GUI controls object
 const guiControls = {
-    numWaves: 30.0,
-    waveAmplitude: 0.1,
-    waveSpeed: 6.0,
-    radialFreq: 20.0,
-    mixFactor: 0.3,
-    combinedMult: 4.0,
-    grainIntensity: 0.25
+
+    numWaves: 8.0,
+        waveAmplitude: 0.05,
+        waveSpeed: 2.0,
+        radialFreq: 10.0,
+        mixFactor: 0.1,
+        combinedMult: 2.0,
+        grainIntensity: 0.1
 }
 
 // Presets definition
 const presets = {
     default: {
-        numWaves: 30.0,
-        waveAmplitude: 0.1,
-        waveSpeed: 6.0,
-        radialFreq: 20.0,
-        mixFactor: 0.3,
-        combinedMult: 4.0,
-        grainIntensity: 0.25
+
+        numWaves: 8.0,
+        waveAmplitude: 0.05,
+        waveSpeed: 2.0,
+        radialFreq: 10.0,
+        mixFactor: 0.1,
+        combinedMult: 2.0,
+        grainIntensity: 0.1
     },
     cosmic: {
         numWaves: 60.0,
@@ -107,13 +109,13 @@ const presets = {
         grainIntensity: 0.4
     },
     minimal: {
-        numWaves: 8.0,
-        waveAmplitude: 0.05,
-        waveSpeed: 2.0,
-        radialFreq: 10.0,
-        mixFactor: 0.1,
-        combinedMult: 2.0,
-        grainIntensity: 0.1
+        numWaves: 30.0,
+        waveAmplitude: 0.1,
+        waveSpeed: 6.0,
+        radialFreq: 20.0,
+        mixFactor: 0.3,
+        combinedMult: 4.0,
+        grainIntensity: 0.25
     },
     psychedelic: {
         numWaves: 80.0,

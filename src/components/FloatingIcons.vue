@@ -4,9 +4,14 @@
       v-for="(icon, index) in icons" 
       :key="index"
       class="floating-icon"
-      :class="[icon.position, { active: isActivePreset(icon.preset) }]"
+      :class="[icon.position, { 
+        active: isActivePreset(icon.preset),
+        touched: touchedIcon === index
+      }]"
       :style="{ transform: `translate(${mouseOffset.x * icon.factor}px, ${mouseOffset.y * icon.factor}px)` }"
       @click="handleIconClick(index)"
+      @touchstart.prevent="handleTouchStart(index, $event)"
+      @touchend.prevent="handleTouchEnd"
       :title="icon.presetName"
     >
       <img :src="icon.src" :alt="icon.alt" loading="eager" />
@@ -18,6 +23,7 @@
 import { ref, onMounted, onUnmounted } from 'vue'
 
 const mouseOffset = ref({ x: 0, y: 0 })
+const touchedIcon = ref(null)
 
 const icons = [
   { 
@@ -53,6 +59,16 @@ const icons = [
     presetName: 'Wave'
   }
 ]
+
+const handleTouchStart = (index, event) => {
+  // Simplemente aplicamos el preset sin animaciones
+  handleIconClick(index)
+}
+
+const handleTouchEnd = () => {
+  // Ya no necesitamos hacer nada aquí
+  touchedIcon.value = null
+}
 
 const handleMouseMove = (event) => {
   const centerX = window.innerWidth / 2
@@ -97,6 +113,8 @@ const isActivePreset = (preset) => {
 onMounted(() => {
   window.addEventListener('mousemove', handleMouseMove)
   window.addEventListener('touchmove', handleTouchMove, { passive: true })
+  
+  // Ya no necesitamos inicialización especial para dispositivos móviles
 })
 
 onUnmounted(() => {
@@ -121,7 +139,6 @@ onUnmounted(() => {
   width: 80px;
   height: 80px;
   pointer-events: all;
-  transition: transform 0.1s ease-out, opacity 0.3s ease, filter 0.3s ease;
   cursor: pointer;
   opacity: 0.8;
   border-radius: 50%;
@@ -134,13 +151,8 @@ onUnmounted(() => {
   user-select: none;
 }
 
-/* Combinar hover y active para dispositivos táctiles */
-.floating-icon:hover,
-.floating-icon:active {
-  opacity: 1;
-  transform: scale(1.2);
-}
-
+/* Eliminamos todas las animaciones y transiciones */
+/* Mantenemos solo los estilos del estado activo */
 .floating-icon.active {
   opacity: 1;
   filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.8));
@@ -164,7 +176,7 @@ onUnmounted(() => {
 
 .top-right {
   top: 20px;
-  right: 20px;
+  right: 40px;
 }
 
 .bottom-left {
@@ -174,35 +186,7 @@ onUnmounted(() => {
 
 .bottom-right {
   bottom: 20px;
-  right: 20px;
-}
-
-/* Responsivo para móviles */
-@media (max-width: 768px) {
-  .floating-icon {
-    width: 70px;
-    height: 70px;
-  }
-  
-  .top-left {
-    top: 30px;
-    left: 30px;
-  }
-
-  .top-right {
-    top: 30px;
-    right: 30px;
-  }
-
-  .bottom-left {
-    bottom: 30px;
-    left: 30px;
-  }
-
-  .bottom-right {
-    bottom: 30px;
-    right: 30px;
-  }
+  right: 40px;
 }
 
 @media (max-width: 480px) {

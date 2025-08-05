@@ -1,7 +1,7 @@
 <template>
   <section class="home-section">
     <ThreeScene />
-
+    <div class="home-bottom-edge"></div>
   </section>
 </template>
 
@@ -11,10 +11,23 @@ import ThreeScene from './ThreeScene.vue'
 
 <style scoped>
 .home-section {
-  width: 100vw;
-  height: 100vh;
+  min-width: 100vw;
+  min-height: 100vh;
   position: relative;
   overflow: hidden;
+}
+
+.home-bottom-edge {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  height: 60px; /* ajusta la altura si lo necesitas */
+  background-image: url('/separador.webp');
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  z-index: 100;
+  pointer-events: none;
 }
 
 @media (max-width: 768px) {

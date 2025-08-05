@@ -24,14 +24,15 @@ import VueFeather from 'vue-feather'
 <style scoped>
 .band-ui {
   position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
+  top: 50%;
+  left: 20px;
+  transform: translateY(-50%);
   z-index: 1000;
 }
 
 .social-icons {
   display: flex;
+  flex-direction: column;
   gap: 20px;
   align-items: center;
 }

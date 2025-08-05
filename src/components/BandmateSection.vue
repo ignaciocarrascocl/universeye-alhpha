@@ -1,5 +1,6 @@
 <template>
   <section class="bandmate-section">
+    <div class="bandmate-top-edge"></div>
     <video autoplay muted loop class="background-video">
       <source src="/Looping_Animation_Generation_Complete.mp4" type="video/mp4">
     </video>
@@ -83,13 +84,27 @@
 
 <style scoped>
 .bandmate-section {
-  width: 100vw;
-  height: 100vh;
+  min-width: 100vw;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
   position: relative;
   overflow: hidden;
+}
+
+.bandmate-top-edge {
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 60px; /* ajusta la altura si lo necesitas */
+  background-image: url('/separador.webp');
+  background-repeat: repeat-x;
+  background-size: auto 100%;
+  transform: scaleY(-1);
+  z-index: 100;
+  pointer-events: none;
 }
 
 .background-video {
@@ -112,7 +127,7 @@
   align-items: center;
   z-index: 2;
   position: relative;
-  margin: 0 2rem;
+  margin: 4rem;
 }
 
 .buttons-container {
