@@ -38,15 +38,17 @@ import FloatingIcons from './components/FloatingIcons.vue'
   border-radius: 1.2rem;
   box-shadow: 0 2px 12px rgba(0,0,0,0.18);
   width: auto;
-  max-width: 90vw;
   display: inline-block;
+  white-space: nowrap;
 }
+
 
 .copyright-link {
   color: #ffd700;
   text-decoration: underline;
   margin-left: 0.3em;
   transition: color 0.2s;
+  display: inline;
 }
 .copyright-link:hover {
   color: #fff;
