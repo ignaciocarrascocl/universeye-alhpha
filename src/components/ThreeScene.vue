@@ -597,7 +597,7 @@ function handleMouseClick(event) {
 
 function handleTouchStart(event) {
     if (!webglInitialized) return
-    event.preventDefault()
+    // No preventDefault() para permitir scroll
     for (let i = 0; i < event.touches.length; i++) {
         const touch = event.touches[i]
         addInteraction(touch.clientX, touch.clientY, 1.2)
@@ -606,7 +606,7 @@ function handleTouchStart(event) {
 
 function handleTouchMove(event) {
     if (!webglInitialized) return
-    event.preventDefault()
+    // No preventDefault() para permitir scroll
     for (let i = 0; i < event.touches.length; i++) {
         const touch = event.touches[i]
         addInteraction(touch.clientX, touch.clientY, 0.8)
@@ -614,7 +614,7 @@ function handleTouchMove(event) {
 }
 
 function handleTouchEnd(event) {
-    event.preventDefault()
+    // No preventDefault() para permitir scroll
     // Touch end doesn't add new interactions, just lets existing ones fade
 }
 
@@ -732,10 +732,10 @@ onMounted(() => {
     window.addEventListener('mouseenter', handleMouseEnter)
     window.addEventListener('click', handleMouseClick)
     
-    // Touch events
-    window.addEventListener('touchstart', handleTouchStart, { passive: false })
-    window.addEventListener('touchmove', handleTouchMove, { passive: false })
-    window.addEventListener('touchend', handleTouchEnd, { passive: false })
+    // Touch events - sin { passive: false } para permitir scroll
+    window.addEventListener('touchstart', handleTouchStart)
+    window.addEventListener('touchmove', handleTouchMove)
+    window.addEventListener('touchend', handleTouchEnd)
     
     // Resize and scroll events
     window.addEventListener('resize', throttledResize)

@@ -25,7 +25,7 @@ import VueFeather from 'vue-feather'
 .band-ui {
   position: fixed;
   top: 50%;
-  left: 20px;
+  left: 0;
   transform: translateY(-50%);
   z-index: 1000;
 }
@@ -49,6 +49,7 @@ import VueFeather from 'vue-feather'
   transition: all 0.6s ease;
   animation: float 3s ease-in-out infinite;
   backdrop-filter: blur(8px);
+  border-radius: 50px;
 }
 
 .social-icon:nth-child(1) {
